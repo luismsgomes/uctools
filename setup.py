@@ -2,14 +2,32 @@ from setuptools import setup, find_packages
 from os import path
 import re
 
+
+def packagefile(*relpath):
+    return path.join(path.dirname(__file__), *relpath)
+
+
+def read(*relpath):
+    with open(packagefile(*relpath)) as f:
+        return f.read()
+
+
+def get_version(*relpath):
+    match = re.search(
+        r'''^__version__ = ['"]([^'"]*)['"]''',
+        read(*relpath),
+        re.M
+    )
+    if not match:
+        raise RuntimeError('Unable to find version string.')
+    return match.group(1)
+
+
 setup(
     name='uctools',
-    version="1.0.1",
-    description='Tools for viewing unicode character names.',
-    long_description="""This package provides the following tools:
-    ucinfo -- writes on stdout the name of each unicode character read from stdin
-    ucenum -- enumerates on stdout all unicode characters of a chosen category
-    """,
+    version="1.0.2",
+    description='Tools for showing information about unicode characters.',
+    long_description=read('README.rst'),
     url='https://github.com/luismsgomes/ucinfo',
     author='Luís Gomes',
     author_email='luismsgomes@gmail.com',
