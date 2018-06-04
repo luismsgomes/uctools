@@ -4,7 +4,7 @@ import re
 
 setup(
     name='uctools',
-    version="1.0.0",
+    version="1.0.1",
     description='Tools for viewing unicode character names.',
     long_description="""This package provides the following tools:
     ucinfo -- writes on stdout the name of each unicode character read from stdin
