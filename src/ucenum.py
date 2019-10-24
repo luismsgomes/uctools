@@ -52,7 +52,7 @@ CATEGORY is one of the following abbreviations:
 CATS = set(line.split(' ', 1)[0].lower() for line in CATEGORIES.splitlines())
 
 def main():
-    if 2 != len(sys.argv) or sys.argv[1] not in CATS:
+    if 2 != len(sys.argv) or sys.argv[1].lower() not in CATS:
         sys.exit(usage.format(prog=sys.argv[0], categories=CATEGORIES))
 
     cat = sys.argv[1].lower()
