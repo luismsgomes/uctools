@@ -25,7 +25,7 @@ def get_version(*relpath):
 
 setup(
     name='uctools',
-    version="1.0.2",
+    version="1.1.0",
     description='Tools for showing information about unicode characters.',
     long_description=read('README.rst'),
     url='https://github.com/luismsgomes/ucinfo',
@@ -40,6 +40,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
     ],
+    python_requires='>=3',
     keywords='text unicode character',
     package_dir={'': 'src'},
     py_modules=['ucinfo', 'ucenum'],

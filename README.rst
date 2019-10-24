@@ -9,7 +9,7 @@ The following command line tools are provided:
 
     ucinfo
         writes on stdout the name of each unicode character read from stdin
-    
+
     ucenum
         enumerates on stdout all unicode characters of a chosen category
 
@@ -29,9 +29,11 @@ The output has 5 tab-separated columns:
 ucenum
 ------
 
-The ucenum tool takes a category abbreviation as argument and outputs a list 
+The ucenum tool takes a category abbreviation as argument and outputs a list
  of all characters belonging to that category.  The categories are:
 
+    L
+        Letter
     Lu
         Letter, Uppercase
     Ll
@@ -42,18 +44,24 @@ The ucenum tool takes a category abbreviation as argument and outputs a list
         Letter, Modifier
     Lo
         Letter, Other
+    M
+        Mark
     Mn
         Mark, Nonspacing
     Mc
         Mark, Spacing Combining
     Me
         Mark, Enclosing
+    N
+        Number
     Nd
         Number, Decimal Digit
     Nl
         Number, Letter
     No
         Number, Other
+    P
+        Punctuation
     Pc
         Punctuation, Connector
     Pd
@@ -68,6 +76,8 @@ The ucenum tool takes a category abbreviation as argument and outputs a list
         Punctuation, Final quote (may behave like Ps or Pe depending on usage)
     Po
         Punctuation, Other
+    S
+        Symbol
     Sm
         Symbol, Math
     Sc
@@ -76,12 +86,16 @@ The ucenum tool takes a category abbreviation as argument and outputs a list
         Symbol, Modifier
     So
         Symbol, Other
+    Z
+        Separator
     Zs
         Separator, Space
     Zl
         Separator, Line
     Zp
         Separator, Paragraph
+    C
+        Other
     Cc
         Other, Control
     Cf
