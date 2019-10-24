@@ -1,4 +1,6 @@
-import sys, unicodedata
+import collections
+import sys
+import unicodedata
 
 USAGE = "usage: {prog} [--help] < INPUT > OUTPUT"
 
@@ -12,12 +14,30 @@ The output has 5 tab-separated columns:
     5 - the Unicode name of the character
 """
 
+REPLACE_NON_PRINTABLES = {
+    '\n': '\\n',
+    '\t': '\\t',
+    '\v': '\\v',
+    '\b': '\\b',
+    '\f': '\\f',
+    '\a': '\\a',
+    '\\': '\\\\',
+}
 
-if __name__ == "__main__":
-    main()
+
+UCInfo = collections.namedtuple("UCInfo", "printable code octets cat name")
 
 
-def main():
+def ucinfo(c):
+    printable = REPLACE_NON_PRINTABLES.get(c, c)
+    code = ord(c)
+    octets = len(bytes(c, 'utf-8'))
+    cat = unicodedata.category(c)
+    name = unicodedata.name(c, '') if c != '\n' else 'NEWLINE'
+    return UCInfo(printable, code, octets, cat, name)
+
+
+def _main():
     if len(sys.argv) == 2 and sys.argv[1] in ["--help", "-h", "-?"]:
         print(HELP)
         sys.exit(0)
@@ -25,20 +45,12 @@ def main():
     if len(sys.argv) > 1:
         print(USAGE.format(prog=sys.argv[0]), file=sys.stderr)
         sys.exit(1)
-    
-    replace = {
-        '\n': '\\n',
-        '\t': '\\t',
-        '\v': '\\v',
-        '\b': '\\b',
-        '\f': '\\f',
-        '\a': '\\a',
-        '\\': '\\\\',
-    }
 
     for line in sys.stdin:
         for c in line:
-            cat = unicodedata.category(c)
-            name = unicodedata.name(c, '') if c != '\n' else 'NEWLINE'
-            octets = len(bytes(c, 'utf-8'))
-            print(replace.get(c, c), ord(c), octets, cat, name, sep='\t')
+            print(*ucinfo(c), sep='\t')
+
+
+if __name__ == "__main__":
+    _main()
+

@@ -41,7 +41,7 @@ Co - Other, Private Use
 Cn - Other, Not Assigned
 '''
 
-usage = '''
+_USAGE = '''
 usage: {prog} CATEGORY
 
 CATEGORY is one of the following abbreviations:
@@ -49,16 +49,32 @@ CATEGORY is one of the following abbreviations:
 {categories}
 '''
 
-CATS = set(line.split(' ', 1)[0].lower() for line in CATEGORIES.splitlines())
+CATS = set(line.split(' ', 1)[0] for line in CATEGORIES.splitlines())
 
-def main():
-    if 2 != len(sys.argv) or sys.argv[1].lower() not in CATS:
-        sys.exit(usage.format(prog=sys.argv[0], categories=CATEGORIES))
 
-    cat = sys.argv[1].lower()
-    chars = (c for c in map(chr, range(65536)) if unicodedata.category(c).lower().startswith(cat))
-    sys.stdout.write(''.join(chars))
+class UnknownCategory(Exception):
+    pass
+
+
+def ucenum(cat):
+    cat = cat.title()
+    if cat not in CATS:
+        raise UnknownCategory
+    for c in map(chr, range(65536)):
+        if unicodedata.category(c).startswith(cat):
+            yield c
+
+
+def _main():
+    if 2 != len(sys.argv):
+        print("Missing argument CATEGORY", file=sys.stderr)
+        sys.exit(_USAGE.format(prog=sys.argv[0], categories=CATEGORIES))
+    try:
+        sys.stdout.write("".join(list(ucenum(sys.argv[1]))))
+    except UnknownCategory:
+        print("Unknown CATEGORY " + sys.argv[1], file=sys.stderr)
+        sys.exit(_USAGE.format(prog=sys.argv[0], categories=CATEGORIES))
 
 
 if __name__ == "__main__":
-    main()
+    _main()

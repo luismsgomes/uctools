@@ -25,7 +25,7 @@ def get_version(*relpath):
 
 setup(
     name='uctools',
-    version="1.1.1",
+    version="1.2.0",
     description='Tools for showing information about unicode characters.',
     long_description=read('README.rst'),
     url='https://github.com/luismsgomes/ucinfo',
