@@ -1,7 +1,8 @@
 uctools
 =======
 
-Tools for showing information about unicode characters (UTF-8).
+Tools for showing information about unicode characters (UTF-8) and 
+performing normalization.
 
 Copyright ® 2018, Luís Gomes <luismsgomes@gmail.com>.
 
@@ -12,6 +13,9 @@ The following command line tools are provided:
 
     ucenum
         enumerates on stdout all unicode characters of a chosen category
+
+    ucnorm
+        applies a standard unicode normalization (NFC, NFKC, NFD or NFKD)
 
 ucinfo
 ------
@@ -106,3 +110,50 @@ The ucenum tool takes a category abbreviation as argument and outputs a list
         Other, Private Use
     Cn
         Other, Not Assigned
+
+ucnorm
+------
+
+This program reads UTF-8 text from stdin and writes it to 
+stdout after applying the specified normalization algorithm.
+
+The Unicode standard defines various normalization forms of a Unicode 
+string, based on the definition of canonical equivalence and 
+compatibility equivalence. In Unicode, several characters can be 
+expressed in various way. For example, the character U+00C7 (LATIN
+CAPITAL LETTER C WITH CEDILLA) can also be expressed as the sequence
+U+0043 (LATIN CAPITAL LETTER C) U+0327 (COMBINING CEDILLA).
+
+Even if two unicode strings look the same to a human reader, if one
+has combining characters and the other doesn’t, they may not compare
+equal.
+
+For each character, there are two normal forms:
+
+- Normal form D (NFD) is also known as canonical decomposition, and
+  translates each character into its decomposed form.
+
+- Normal form C (NFC) first applies a canonical decomposition, then 
+  composes pre-combined characters again.
+
+In addition to these two forms, there are two additional normal forms
+based on compatibility equivalence:
+
+- Normal form KD (NFKD) will apply the compatibility decomposition,
+  i.e. replace all compatibility characters with their equivalents.
+
+- Normal form KC (NFKC) first applies the compatibility decomposition,
+  followed by the canonical composition.
+
+Compatibility decomposition ensures that equivalent characters will
+compare equal (i.e. have the same codepoints). In Unicode, certain
+characters are supported which normally would be unified with other
+characters. For example, U+2160 (ROMAN NUMERAL ONE) is really the
+same thing as U+0049 (LATIN CAPITAL LETTER I). However, it is 
+supported in Unicode for compatibility with existing character sets
+(e.g. gb2312).
+
+This program uses the normalization algorithms implemented in Python's
+standard library. See:
+https://docs.python.org/3/library/unicodedata.html#unicodedata.normalize
+
